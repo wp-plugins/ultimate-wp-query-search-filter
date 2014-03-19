@@ -4,7 +4,7 @@ Donate link: http://9-sec.com/donation/
 Tags: Search Filter, taxonoy, custom post type, custom meta field, taxonomy & meta field filter, advanced search, Ajax, search engine
 Requires at least: 3.5
 Tested up to: 3.8
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,6 +49,9 @@ Put this into your template:
 
 Just insert the shortcodes like you would in the post content. eg. `[ULWPQSF id=3299]`
 
+= What if I want to display the search form in a tempate? =
+From version 1.0.4 you can use `get_uwpqdf_form()` to display the form in template. You have to insert aleast the form id attribute to the function. Eg. `$arg=array('id'=>102); echo get_uwpqsf_form($arg);`. Other attributes supported includes 'button','formtitle' and 'divclass', just like the shortcodes does.
+
 = What is the 'button' parameter? How is it used? =
 The 'button' parameter is used to display/hide the search button. NOTE that this parameter is applied to AJAX SEARCH only and once you hide the button, it will automatically update the result when a change is made in the search form. To hide the button, simply add 'button=0' to the shortcode. eg. `[ULWPQSF id=3299 button=0]`
 
@@ -87,4 +90,5 @@ For more Info or Documentation please visit [here](http://9-sec.com/2014/01/ulti
 * Refined some hooks.
 * Thanks Christopher for helping me refined the description.
 
-
+= 1.0.4 =
+* Fixed some bugs and add new functions to call the search form and pagination

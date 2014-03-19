@@ -93,22 +93,29 @@ if(!class_exists('uwpqsfprocess')){
 	   
 	  function get_uwqsf_taxo($id, $gettaxo){
 			global $wp_query;
-		    $options = get_post_meta($id, 'ajaxwpqsf-relbool', true);
+		    $options = get_post_meta($id, 'uwpqsf-option', true);
 			$taxrel = isset($options[0]['tax']) ? $options[0]['tax'] : 'AND';
+			$taxo=array('relation' => $taxrel,'');
 			if(!empty($gettaxo)){
 				$taxoperator =array('1'=>'IN','2'=>'NOT IN','3'=>'AND');		
-				$taxo=array('relation' => $taxrel,'');
+				
 				foreach($gettaxo as  $v){
 						
 				  $safopt = !empty ( $taxoperator[$v['opt']])  ?  $taxoperator[$v['opt']] : 'IN';	
 				   if(!empty($v['term']))	{	
 					if( $v['term'] == 'uwpqsftaxoall'){
-					  $taxo[] = array(
-							'taxonomy' => strip_tags( stripslashes($v['name'])),
-							'field' => 'slug',
-							'terms' => strip_tags( stripslashes($v['term'])),
-							'operator' => 'NOT IN'
-						);
+						$savetaxo = get_post_meta($id, 'uwpqsf-taxo', true);
+						foreach($savetaxo as $key => $value){
+							if($v['name'] == $value['taxname'] && !empty($value['exc'])){
+								$taxo[] = array(
+									'taxonomy' => strip_tags( stripslashes($v['name'])),
+									'field' => 'id',
+									'terms' =>  explode(',',$value['exc']),
+									'operator' => 'NOT IN'
+								);
+							}
+						}	
+					  
 					  
 					  }
 					elseif(is_array($v['term'])){
@@ -129,15 +136,29 @@ if(!class_exists('uwpqsfprocess')){
 							'operator' => $safopt
 						);
 					}
+				   }else{
+					   
+					   $savetaxo = get_post_meta($id, 'uwpqsf-taxo', true);
+					   foreach($savetaxo as $key => $value){
+							if(!empty($value['exc']) && $v['name'] == $value['taxname']){
+								$taxo[] = array(
+									'taxonomy' => $value['taxname'],
+									'field' => 'id',
+									'terms' =>  explode(',',$value['exc']),
+									'operator' => 'NOT IN'
+								);
+							}
+						}
 				   }
 				 } //end foreach
-					$output = apply_filters( 'uwpqsf_get_taxo', $taxo,$id, $gettaxo );	
-					unset($output[0]);
-					return $output;				
+								
 					
-			}
+			}				   
+			   $output = apply_filters( 'uwpqsf_get_taxo', $taxo,$id, $gettaxo );	
+				unset($output[0]);
+				return $output;	
 			
-		}	
+		}		
 			
 	
 

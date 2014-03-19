@@ -8,10 +8,10 @@
 			$post_types=get_post_types('','names'); 
 			unset($post_types['revision']); unset($post_types['attachment']);unset($post_types['nav_menu_item']);unset($post_types['jaxwpsf']);
 			$post_id = isset($_GET['uformid']) ? $_GET['uformid'] : null;
-			
+			$allposttpes = apply_filters( 'uwpqsf_get_cpt', $post_types );
 			$oldcpts = get_post_meta($post_id, 'uwpqsf-cpt', true);
 			
-			foreach($post_types as $post_type ) {
+			foreach($allposttpes as $post_type ) {
 			    $checked = null;		
 			   
 			    if(!empty($oldcpts)){

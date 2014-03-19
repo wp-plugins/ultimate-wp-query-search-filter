@@ -22,7 +22,7 @@ if($options[0]['method'] == '1'){
 	$auto = '';
 }
 
- do_action( 'uwpqsf_form_top', $atts);
+ 
 
 
 $fields = new uwpqsfront();
@@ -35,6 +35,8 @@ if($formtitle){
 echo '<input type="hidden" name="unonce" value="'.$nonce.'" /><input type="hidden" name="uformid" value="'.$id.'">';
 
 echo $hidden;
+
+do_action( 'uwpqsf_form_top', $atts);
 
 if(!empty($taxo)){
 	$c = 0;
