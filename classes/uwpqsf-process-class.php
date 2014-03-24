@@ -93,7 +93,8 @@ if(!class_exists('uwpqsfprocess')){
 	   
 	  function get_uwqsf_taxo($id, $gettaxo){
 			global $wp_query;
-		    $options = get_post_meta($id, 'uwpqsf-option', true);
+		   	$options = get_post_meta($id, 'uwpqsf-option', true);
+			$savetaxo = get_post_meta($id, 'uwpqsf-taxo', true);
 			$taxrel = isset($options[0]['tax']) ? $options[0]['tax'] : 'AND';
 			$taxo=array('relation' => $taxrel,'');
 			if(!empty($gettaxo)){
@@ -104,7 +105,7 @@ if(!class_exists('uwpqsfprocess')){
 				  $safopt = !empty ( $taxoperator[$v['opt']])  ?  $taxoperator[$v['opt']] : 'IN';	
 				   if(!empty($v['term']))	{	
 					if( $v['term'] == 'uwpqsftaxoall'){
-						$savetaxo = get_post_meta($id, 'uwpqsf-taxo', true);
+						
 						foreach($savetaxo as $key => $value){
 							if($v['name'] == $value['taxname'] && !empty($value['exc'])){
 								$taxo[] = array(
@@ -138,7 +139,7 @@ if(!class_exists('uwpqsfprocess')){
 					}
 				   }else{
 					   
-					   $savetaxo = get_post_meta($id, 'uwpqsf-taxo', true);
+					
 					   foreach($savetaxo as $key => $value){
 							if(!empty($value['exc']) && $v['name'] == $value['taxname']){
 								$taxo[] = array(
@@ -175,7 +176,7 @@ if(!class_exists('uwpqsfprocess')){
 		$paged = ( get_query_var( 'paged') ) ? get_query_var( 'paged' ) : 1;
 		$cpt        = !empty($cpts) ? $cpts : 'any';
 		$ordermeta  = !empty($options[0]['smetekey']) ? $options[0]['smetekey'] : null;
-		$ordertype = (!empty($options[0]['otype']) && $ordermeta) ? $options[0]['otype'] : null;
+		$ordertype = !empty($options[0]['otype']) ? $options[0]['otype'] : null;
 		$order      = !empty($options[0]['sorder']) ? $options[0]['sorder'] : null;
 		$number      = !empty($options[0]['resultc']) ? $options[0]['resultc'] : $default_number;
 		$keyword = !empty($_GET['skeyword']) ?	 sanitize_text_field($_GET['skeyword']) : null;
@@ -234,7 +235,7 @@ if(!class_exists('uwpqsfprocess')){
 				
 		$cpt        = !empty($cpts) ? $cpts : 'any';
 		$ordermeta  = !empty($options[0]['smetekey']) ? $options[0]['smetekey'] : null;
-		$ordertype = (!empty($options[0]['otype']) ) ? $options[0]['otype'] : null;
+		$ordertype = !empty($options[0]['otype'])  ? $options[0]['otype'] : null;
 		$order      = !empty($options[0]['sorder']) ? $options[0]['sorder'] : null;
 		$number      = !empty($options[0]['resultc']) ? $options[0]['resultc'] : $default_number;
 				
