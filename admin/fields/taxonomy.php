@@ -7,16 +7,15 @@
 	
 	<p>
 	<span><b><?php _e("Select Taxonomy","UWPQSF");?></b></span><br>
-	<select id="pretax" name="pre_add_tax">
+	<select id="pretax" name="pre_add_tax" class="curtax">
 	<option value=""></option>
-	<option value="category"><?php _e("category","UWPQSF");?></option>
-	<option value="post_tag"><?php _e("Post tag","UWPQSF");?></option>
+	
 	<?php
 	        $taxoperator =array('1'=>'IN','2'=>'NOT IN','3'=>'AND');
-		$args=array('public'   => true, '_builtin' => false); 
+		$args=array('public'   => true, '_builtin' => true); 
 		$output = 'names'; // or objects
 		$operator = 'and'; // 'and' or 'or'
-		$taxonomies=get_taxonomies($args,$output,$operator); 
+		$taxonomies=get_taxonomies('','names'); 
 		if  ($taxonomies) {
 			foreach ($taxonomies  as $taxonomy ) {
 			echo '<option value="'.$taxonomy.'">'.$taxonomy.'</option>';
@@ -43,8 +42,12 @@
 	</p>
 	<p>
 	<span><b><?php _e("Exculde Term ID","UWPQSF");?></b></span><br>
-	<input type="text" id="preexclude" name="pre_tax_exclude" size="20" value=""><br>
-	<span class="desciption"><?php _e("Enter the term's ID that you want to exclude. Seperate by comma ',' ", "UWPQSF") ;?></span>
+	<input type="text" id="preexclude" class="extids_0" name="pre_tax_exclude" size="20" value="">
+	<a href="#TB_inline?width=600&height=600&inlineId=extermhidden&input=isnbtn" class="thickbox exterm"><?php _e("Choose Terms","UWPQSF");?></a><br>
+	<span class="desciption"><?php _e("Enter the term's ID that you want to exclude. ", "UWPQSF") ;?></span><br>
+	<span><input type="checkbox" id="prenex" name="pre_enabel_ex" value="1" ><?php _e("Exclude the term from being searched", "UWPQSF") ;?></span><br>
+	<?php _e("Default is exclude from displayed in the search form. ", "UWPQSF") ;?></span><br>
+	<span><?php _e("<b>Noticed</b>: Use this feature wisely or it will produce incorrect search result", "UWPQSF") ;?></span>
 	</p>
 	<p>
 	<span><b><?php _e("Display Type?","UWPQSF");?></b></span><br>	
@@ -57,7 +60,7 @@
 		echo '</label>';
 	}	
 	;?>
-	<br>
+	<br> 
 	<?php do_action( 'ajwpsf_taxodisplay_desc'); ?>
 	</span>
 	</p>
@@ -110,18 +113,14 @@ $items = array("AND", "OR");
 		$args=array('public'   => true, '_builtin' => false); 
 		$output = 'names'; // or objects
 		$operator = 'and'; // 'and' or 'or'
-		$taxonomies=get_taxonomies($args,$output,$operator); 
+		$taxonomies=get_taxonomies('','names'); 
                  foreach($taxo as $k => $v){
 		   echo '<div id="dragbox"><h3><div class="toggle plus"></div>'.$v['taxlabel'].'<a href="" class="removediv">Remove</a></h3>';
 		   echo '<div class="taxodragbox"  style="display:none">';	
 		   echo '<input type="hidden" id="taxcounter" name="taxcounter" value="'.$c.'"/>';
                    //taxonomy	
 		   echo '<p><span><b>'.__("Taxonomy","UWPQSF").'</b></span><br>'; 
-		   echo '<select id="taxo" name="uwpname[taxo]['.$c.'][taxname]">';
-				$catselect = ($v['taxname']== 'category') ? 'selected="selected"' : '';
-		   echo '<option value="category" '.$catselect.'>'.__("category","UWPQSF").'</option>';
-				$tagselect = ($v['taxname']== 'post_tag') ? 'selected="selected"' : '';
-		   echo '<option value="post_tag" '.$tagselect.'>'.__("Post tag","UWPQSF").'</option>';
+		   echo '<select id="taxo" name="uwpname[taxo]['.$c.'][taxname]" class="curtax">';
 			     foreach ($taxonomies  as $taxonomy ) {
 		            	$selected = ($v['taxname']==$taxonomy) ? 'selected="selected"' : '';		
 		   echo '<option value="'.$taxonomy.'" '.$selected.'>'.$taxonomy.'</option>';
@@ -150,7 +149,9 @@ $items = array("AND", "OR");
 	           //exclude ids	
 		   echo '<p>';
 		   echo '<span><b>'.__("Exculde Term ID","UWPQSF").'</b></span><br>';
-                   echo '<input type="text" id="taxexculde" name="uwpname[taxo]['.$c.'][exc]" value="'.sanitize_text_field($v['exc']).'"/>';
+                   echo '<input type="text" id="taxexculde" class="extids_',$c + 1,'" name="uwpname[taxo]['.$c.'][exc]" value="'.sanitize_text_field($v['exc']).'"/>';
+                   echo '<a href="#TB_inline?width=600&height=600&inlineId=extermhidden" class="thickbox exterm">'.__("Choose Terms","UWPQSF").'</a><br>';
+                   echo '<input type="checkbox" ',($v['exsearch'] == '1') ? 'checked="checked"' : '',' id="enex" name="uwpname[taxo]['.$c.'][exsearch]" value="1" >'.__("Exclude the term from being searched","UWPQSF");
 		   echo '</p>';	
 		   //display type	
 		   echo '<p>';
@@ -182,6 +183,7 @@ $items = array("AND", "OR");
 	?>
 	</div>	
 </div>
+<div id="extermhidden" style="display:none"><div class="extinput"></div> <br><br><input type="button" class="isnbtn" value="Insert" ></div>
 <div class="clear"></div>
 </div>
 

@@ -93,8 +93,8 @@ if(!class_exists('uwpqsfprocess')){
 	   
 	  function get_uwqsf_taxo($id, $gettaxo){
 			global $wp_query;
-		   	$options = get_post_meta($id, 'uwpqsf-option', true);
-			$savetaxo = get_post_meta($id, 'uwpqsf-taxo', true);
+		    $options = get_post_meta($id, 'uwpqsf-option', true);
+		    $savetaxo = get_post_meta($id, 'uwpqsf-taxo', true);
 			$taxrel = isset($options[0]['tax']) ? $options[0]['tax'] : 'AND';
 			$taxo=array('relation' => $taxrel,'');
 			if(!empty($gettaxo)){
@@ -107,7 +107,7 @@ if(!class_exists('uwpqsfprocess')){
 					if( $v['term'] == 'uwpqsftaxoall'){
 						
 						foreach($savetaxo as $key => $value){
-							if($v['name'] == $value['taxname'] && !empty($value['exc'])){
+							if($v['name'] == $value['taxname'] && !empty($value['exsearch']) && $value['exsearch'] == '1' && !empty($value['exc']) ){
 								$taxo[] = array(
 									'taxonomy' => strip_tags( stripslashes($v['name'])),
 									'field' => 'id',
@@ -139,9 +139,9 @@ if(!class_exists('uwpqsfprocess')){
 					}
 				   }else{
 					   
-					
+					 
 					   foreach($savetaxo as $key => $value){
-							if(!empty($value['exc']) && $v['name'] == $value['taxname']){
+							if(!empty($value['exsearch']) && $value['exsearch'] == '1' && !empty($value['exc']) && $v['name'] == $value['taxname']){
 								$taxo[] = array(
 									'taxonomy' => $value['taxname'],
 									'field' => 'id',

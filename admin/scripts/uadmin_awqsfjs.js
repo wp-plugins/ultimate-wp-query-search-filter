@@ -160,4 +160,37 @@ jQuery(document).ready(function($) {
 			$('#ormkey').prop('disabled',true);$('#ormkey').addClass('inactive');
 		}
 	});
+	
+	$("#wpcontent").on("click", ".exterm", function(e){		
+		e.preventDefault(); 
+		$('.extinput').html("");	
+		
+		var parent = $(this).parent().parent();
+		var ediv = 	parent.find('#preexclude, #taxexculde').attr('class');
+		var cutax = parent.find('.curtax').val();
+		var exterms = parent.find('#preexclude, #taxexculde').val();
+	
+		jQuery.ajax({
+				 type: 'POST',	 
+				 url: ajaxurl,
+				 data: ({action : 'uwpqsfexclude_terms', cutax:cutax,exterms:exterms,ediv:ediv  }),
+				 success: function(html) {
+						
+						$('.extinput').append(html);
+				       
+				    }
+				 });
+	});
+		$(".isnbtn").on("click", function(e){
+			var val = [];
+				
+				 $('.exids:checkbox:checked').each(function(i){
+					val[i] = $(this).val();
+				});
+				var insert = $('#ediv').val();
+				$(insert).val(val);
+		       tb_remove();
+	 
+	   });
+	
 });  

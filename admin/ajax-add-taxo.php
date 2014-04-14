@@ -9,6 +9,7 @@
 		$exclude = $getdata['pre_tax_exclude'];
 		$type = isset($getdata['displyatype']) ? $getdata['displyatype'] : '';
 		$operator = isset($getdata['pre_operator']) ? $getdata['pre_operator'] : '';
+		$exsearch = isset($getdata['pre_enabel_ex']) ? true : '';
 		$c = $_POST['counter'];
 		 $taxoperator =array('1'=>'IN','2'=>'NOT IN','3'=>'AND');
 			$args=array(
@@ -18,13 +19,13 @@
 	); 
 	$output = 'names'; // or objects
 	$compare = 'and'; // 'and' or 'or'
-	$taxonomies=get_taxonomies($args,$output,$compare); 
+	$taxonomies=get_taxonomies('','names'); 
 	 
 	echo '<div id="dragbox" ><h3><div class="toggle plus" title="'.__("Click To Edit", "UWPQSF").'"></div>'.$label.'<a href="" class="removediv">Remove</a></h3>';
 	echo '<div class="taxodragbox" style="display:none">';
 	echo '<input type="hidden" id="taxcounter" value='.$c.'>';	
 	echo '<p><span><b>'.__("Taxonomy","UWPQSF").'</b></span><br>'; 
-	echo '<select id="taxo" name="uwpname[taxo]['.$c.'][taxname]">';
+	echo '<select id="taxo" name="uwpname[taxo]['.$c.'][taxname]" class="curtax">';
 				$catselect = ($taxo == 'category') ? 'selected="selected"' : '';
 	echo '<option value="category" '.$catselect.'>'.__("category","UWPQSF").'</option>';
 				$tagselect = ($taxo == 'post_tag') ? 'selected="selected"' : '';
@@ -59,7 +60,9 @@
 	  //exclude ids	
 	  echo '<p>';
 	  echo '<span><b>'.__("Exculde Term ID","UWPQSF").'</b></span><br>';
-          echo '<input type="text" id="taxexculde" name="uwpname[taxo]['.$c.'][exc]" value="'.sanitize_text_field($exclude).'"/>';
+          echo '<input type="text" id="taxexculde" class="extids_',$c + 1,'" name="uwpname[taxo]['.$c.'][exc]" value="'.sanitize_text_field($exclude).'"/>';
+          echo '<a href="#TB_inline?width=600&height=600&inlineId=extermhidden" class="thickbox exterm">'.__("Choose Terms","UWPQSF").'</a><br>';
+          echo '<input type="checkbox" ',!empty($exsearch) ? 'checked="checked"' : '',' id="enex" name="uwpname[taxo]['.$c.'][exsearch]" value="1" >'.__("Exclude the term from being searched","UWPQSF");
 	  echo '</p>';	
 	  //display type	
 	  echo '<p>';

@@ -3,7 +3,7 @@
 Plugin Name: Ultimate WP Query Search Filter
 Plugin URI: http://www.9-sec.com/
 Description: This plugin let you using wp_query to filter taxonomy,custom meta and post type as search result.
-Version: 1.0.5
+Version: 1.0.6
 Author: TC 
 Author URI: http://www.9-sec.com/
 */
@@ -45,6 +45,8 @@ class ulitmatewpsf{
 		add_action( 'wp_ajax_uwpqsfTaxo_ajax', array( $this,'uwpqsfTaxo_ajax') );  
 		// admin add meta fields ajax
 		add_action( 'wp_ajax_uwpqsfCmf_ajax', array( $this,'uwpqsfCmf_ajax') ); 
+		//generate exlude terms
+		add_action( 'wp_ajax_uwpqsfexclude_terms', array( $this,'uwpqsfexclude_terms') ); 
 	}
 
   function uwpqsf_setting(){
@@ -139,6 +141,7 @@ class ulitmatewpsf{
 							'exc' => sanitize_text_field($tv['exc']),
 							'type' => sanitize_text_field($tv['type']),
 							'operator' => sanitize_text_field($tv['operator']),
+							'exsearch' => sanitize_text_field($tv['exsearch']),
 						);
 					
 					
@@ -289,7 +292,34 @@ class ulitmatewpsf{
 	else{
 		echo 'no form added.';
 	}
-  }		
+  }	
+  
+  function uwpqsfexclude_terms(){
+	  $cutax   = $_POST['cutax'];
+	  $exterms = $_POST['exterms'];
+	  $ediv = '.'.$_POST['ediv'];
+	  $edis = array();
+	  if(!empty($exterms)){
+		  $edis = explode(",",  $exterms );
+	  }
+	  echo '<h3>'.__('Selected Taxonomy : '.$cutax,"UWPQSF").'</h3><br>';
+	 
+	  if(!empty($cutax)){
+		  $gterms = get_terms( $cutax , array('hide_empty' => 0 ) );
+		  foreach($gterms as $gterm){
+			  echo '<label><input ',in_array($gterm->term_id,$edis) ? 'checked = "checked" ' : '',' type="checkbox" class="exids" value="'.$gterm->term_id.'">'.$gterm->name.'</label>';
+		  }
+	  }else{
+		    if(empty($cutax)){
+		    echo __("Please Select a taxonomy first","UWPQSF");}
+		    else{ 
+				  echo __("No term found in this taxonomy ","UWPQSF");
+				}
+		  }
+	echo '<input type="hidden" id="ediv" value="'.$ediv.'">';  
+	
+	  exit;	
+  }	
 
 }//end of class
 
