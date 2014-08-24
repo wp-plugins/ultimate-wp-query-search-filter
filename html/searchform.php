@@ -63,7 +63,8 @@ if(!empty($cmf)){
 
 if(isset($options[0]['strchk']) && ($options[0]['strchk'] == '1') ){
 		$stext  = '<div class="'.$defaultclass.' '.$divclass.'"><label class="'.$defaultclass.' '.$divclass.'-keyword">'.$options[0]['strlabel'].'</label>';
-		$stext .= '<input id="'.$divid.'_key" type="text" name="skeyword" class="uwpqsftext" value="" />';
+		$oldvalue = (isset($_GET['skeyword'])) ? $_GET['skeyword'] : '';
+		$stext .= '<input id="'.$divid.'_key" type="text" name="skeyword" class="uwpqsftext" value="'.$oldvalue.'" />';
         $stext .= '</div>';
         $textsearch =  apply_filters('uwpqsf_string_search',$stext, $id,$divid,$defaultclass,$divclass,$options);
         echo $textsearch;

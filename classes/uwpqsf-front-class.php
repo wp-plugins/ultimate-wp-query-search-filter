@@ -17,8 +17,9 @@ if(!class_exists('uwpqsfront')){
 				$html .= '<option selected value="uwpqsftaxoall">'.$taxall.'</option>';
 			}
 					if ( $count > 0 ){
-						foreach ( $terms as $term ) {							
-					$html .= '<option value="'.$term->slug.'">'.$term->name.'</option>';}
+						foreach ( $terms as $term ) {
+						$selected = (isset($_GET['taxo'][$c]['term']) && $_GET['taxo'][$c]['term'] == $term->slug) ? 'selected="selected"' : ''; 							
+					$html .= '<option value="'.$term->slug.'" '.$selected.'>'.$term->name.'</option>';}
 			}				
 			$html .= '</select>';
 			$html .= '</div>';
@@ -30,11 +31,13 @@ if(!class_exists('uwpqsfront')){
 				$html .= '<input  type="hidden" name="taxo['.$c.'][name]" value="'.$taxname.'">';
 				$html .= '<input  type="hidden" name="taxo['.$c.'][opt]" value="'.$opt.'">';
 				if(!empty($taxall)){
-				$html .= '<label><input type="checkbox" id="tchkb-'.$c.'" name="taxo['.$c.'][call]" class="chktaxoall" >'.$taxall.'</label>';
+				$checkall = (isset($_GET['taxo'][$c]['call']) && $_GET['taxo'][$c]['call'] == '1'  ) ? 'checked="checked"' : '';	
+				$html .= '<label><input type="checkbox" id="tchkb-'.$c.'" name="taxo['.$c.'][call]" class="chktaxoall" value="1" '.$checkall.'>'.$taxall.'</label>';
 				}
 				foreach ( $terms as $term ) {
 				$value = $term->slug;
-				$html .= '<label><input type="checkbox" id="tchkb-'.$c.'" name="taxo['.$c.'][term][]" value="'.$value.'" >'.$term->name.'</label>';
+				$checked = (isset($_GET['taxo'][$c]['term']) && in_array($value, $_GET['taxo'][$c]['term'])) ? 'checked="checked"' : '';
+				$html .= '<label><input type="checkbox" id="tchkb-'.$c.'" name="taxo['.$c.'][term][]" value="'.$value.'" '.$checked.'>'.$term->name.'</label>';
 				}
 				$html .= '</div>';
 				return  apply_filters( 'uwpqsf_tax_field_checkbox', $html ,$type,$exc,$hide,$taxname,$taxlabel,$taxall,$opt,$c,$defaultclass,$formid,$divclass);
@@ -50,7 +53,8 @@ if(!class_exists('uwpqsfront')){
 				$html .= '<label><input type="radio" id="tradio-'.$c.'" name="taxo['.$c.'][term]" value="uwpqsftaxoall">'.$taxall.'</label>';
 				}
 			foreach ( $terms as $term ) {
-				$html .= '<label><input type="radio" id="tradio-'.$c.'" name="taxo['.$c.'][term]" value="'.$term->slug.'">'.$term->name.'</label>';
+				$checked = (isset($_GET['taxo'][$c]['term']) && $_GET['taxo'][$c]['term'] == $term->slug) ? 'checked="checked"' : '';
+				$html .= '<label><input type="radio" id="tradio-'.$c.'" name="taxo['.$c.'][term]" value="'.$term->slug.'" '.$checked.'>'.$term->name.'</label>';
 			}
 
 				
@@ -80,8 +84,9 @@ if(!class_exists('uwpqsfront')){
 				}
 				
 					foreach ( $opts as $opt ) {
-							 $val = explode('::',$opt);
-							$html .= '<option value="'.$val[0].'">'.$val[1].'</option>';
+					  $val = explode('::',$opt);
+					  $selected = (isset($_GET['cmf'][$i]['value']) && $_GET['cmf'][$i]['value'] == $val[0]) ? 'selected="selected"' : '';	
+					  $html .= '<option value="'.$val[0].'" '.$selected.'>'.$val[1].'</option>';
 					}
 				$html .= '</select>';
 				$html .= '</div>';
@@ -94,11 +99,13 @@ if(!class_exists('uwpqsfront')){
 				 $html .= '<input type="hidden" name="cmf['.$i.'][metakey]" value="'.$metakey.'">';
 				 $html .= '<input type="hidden" name="cmf['.$i.'][compare]" value="'.$compare.'">';
 				if(!empty($all)){
-				 $html .= '<label><input type="checkbox" id="cmf-'.$i.'" name="cmf['.$i.'][call]" class="chkcmfall" >'.$all.'</label>';
+				 $checkall = (isset($_GET['cmf'][$i]['call']) && $_GET['cmf'][$i]['call'] == '1'  ) ? 'checked="checked"' : '';	
+				 $html .= '<label><input type="checkbox" id="cmf-'.$i.'" name="cmf['.$i.'][call]" class="chkcmfall" value="1" '.$checkall.'>'.$all.'</label>';
 				}				
 				foreach ( $opts as $opt ) {
-						 $val = explode('::',$opt);
-				$html .= '<label><input type="checkbox" id="cmf-'.$i.'" name="cmf['.$i.'][value][]" value="'.$val[0].'" >'.$val[1].'</label>';	
+				        $val = explode('::',$opt);
+					$checked = (isset($_GET['cmf'][$i]['value']) && in_array($val[0],$_GET['cmf'][$i]['value']) ) ? 'checked="checked"' : '';
+				        $html .= '<label><input type="checkbox" id="cmf-'.$i.'" name="cmf['.$i.'][value][]" value="'.$val[0].'" '.$checked.'>'.$val[1].'</label>';	
 					}
 			 	$html .= '</div>';
 				
@@ -113,8 +120,9 @@ if(!class_exists('uwpqsfront')){
 			}
 		
 			foreach ( $opts as $opt ) {
-				 $val = explode('::',$opt);
-				$html .= '<label><input type="radio" id="cmf-'.$i.'" name="cmf['.$i.'][value]" value="'.$val[0].'" >'.$val[1].'</label>';	
+				$val = explode('::',$opt);
+				$checked = (isset($_GET['cmf'][$i]['value']) && $_GET['cmf'][$i]['value'] == $val[0]) ? 'checked="checked"' : '';
+				$html .= '<label><input type="radio" id="cmf-'.$i.'" name="cmf['.$i.'][value]" value="'.$val[0].'" '.$checked.'>'.$val[1].'</label>';	
 			} 
 				$html .= '</div>';
 				
@@ -125,7 +133,7 @@ if(!class_exists('uwpqsfront')){
 	
 		}  	
 		 
-	  }	
+	  }		
 	
   }//end class
 }//end check class
