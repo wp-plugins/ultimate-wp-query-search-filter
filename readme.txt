@@ -3,8 +3,8 @@ Contributors: TC.K
 Donate link: http://9-sec.com/donation/
 Tags: Search Filter, taxonoy, custom post type, custom meta field, taxonomy & meta field filter, advanced search, Ajax, search engine
 Requires at least: 3.5
-Tested up to: 4.0
-Stable tag: 1.0.7
+Tested up to: 4.2.1
+Stable tag: 1.0.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -59,8 +59,10 @@ The 'button' parameter is used to display/hide the search button. NOTE that this
 The 'divclass' is used to add your own class to the front-end search form. This class will be applied to each filter (taxonomy or meta field) and then you can use it for customize the design etc. To use the parameter, just simply add 'divclass' to the shortcode. eg. `[ULWPQSF id=3299 divclass=my_own_class]`
 
 = What if I don't want to display the title of the search form? =
-
 Just set the `formtitle` attribute to 0 in the shortcode eg. `[ULWPQSF id=3299 formtitle="0"]`
+
+= I want to put the string search input box on the top of the search form =
+Frist, you need to enable the string search at the form setting page, then on the shortcode add `text_position="top"`. Eg. `[ULWPQSF id=3299 text_position="top"]`.
 
 = How can I customize the plugin? =
 
@@ -103,3 +105,8 @@ For more Info or Documentation please visit [here](http://9-sec.com/2014/01/ulti
 = 1.0.7 =
 * Fixed minor issue
 * Defualt template form input memory
+
+= 1.0.8 =
+* Fixed search form html issue
+* Add new parameter to shortcode to show text input box on top or bottom
+* Disabled input when submit on Ajax search
