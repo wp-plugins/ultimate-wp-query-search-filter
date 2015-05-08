@@ -1,7 +1,13 @@
 jQuery(document).ready(function($) {
 	
 		$('body').on('click','.usearchbtn', function(e) {
-			process_data($(this));
+            var form = $(this).parent().parent().attr('id');
+            if (!form) {
+                id = $(this);
+            }else{
+                var id = $('#'+form); 
+            }
+			process_data(id);
 			return false;
 		});
 	
@@ -14,28 +20,33 @@ jQuery(document).ready(function($) {
 
 		$('body').on('keypress','.uwpqsftext',function(e) {
 		  if(e.keyCode == 13){
-		    e.preventDefault();
-		    process_data($(this));
+                e.preventDefault();
+                var form = $(this).parent().parent().attr('id');
+                if (!form) {
+                    id = $(this);
+                }else{
+                    var id = $('#'+form); 
+                }
+                process_data(id);		   
 		  }
 		});
 		
 		window.process_data = function ($obj) {
-			
 			var ajxdiv = $obj.closest("form").find("#uajaxdiv").val();	
 			var res = {loader:$('<div />',{'class':'umloading'}),container : $(''+ajxdiv+'')};
-		
+            
 			var getdata = $obj.closest("form").serialize();
 			var pagenum = '1';
-			
+		
 			jQuery.ajax({
 				 type: 'POST',	 
 				 url: ajax.url,
 				 data: ({action : 'uwpqsf_ajax',getdata:getdata, pagenum:pagenum }),
-				 beforeSend:function() {$(''+ajxdiv+'').empty();res.container.append(res.loader);},
+				 beforeSend:function() {$(''+ajxdiv+'').empty();res.container.append(res.loader);$($obj).find('input, textarea, button, select').attr("disabled", true);},
 				 success: function(html) {
 					res.container.find(res.loader).remove();
 				  $(''+ajxdiv+'').html(html);
-				
+				  $($obj).find('input, textarea, button, select').attr("disabled", false);
 				
 				 }
 				 });
@@ -61,8 +72,8 @@ jQuery(document).ready(function($) {
 				 });
 		}
 		
-	 $('body').on('click', '.chktaxoall,.chkcmfall',function () {
-	
+	 $('body').on('click', '.chktaxoall, .chkcmfall',function () {
+		
 	    $(this).closest('.togglecheck').find('input:checkbox').prop('checked', this.checked);
 		
          });

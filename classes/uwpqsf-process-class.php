@@ -165,7 +165,7 @@ if(!class_exists('uwpqsfprocess')){
 
        function uwpqsf_search_query($query){
 	 if($query->is_search()){
-	    if($query->query_vars['s'] == 'uwpsfsearchtrg'){	
+	    if($query->query_vars['s'] == 'uwpsfsearchtrg' && isset($_GET['uformid'])){	
 		$getdata = $_GET;
 		$taxo = (isset($_GET['taxo']) && !empty($_GET['taxo'])) ? $_GET['taxo'] : null;
 		$cmf = (isset($_GET['cmf']) && !empty($_GET['cmf'])) ? $_GET['cmf'] : null;
