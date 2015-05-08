@@ -3,7 +3,7 @@
 Plugin Name: Ultimate WP Query Search Filter
 Plugin URI: http://www.9-sec.com/
 Description: This plugin let you using wp_query to filter taxonomy,custom meta and post type as search result.
-Version: 1.0.8
+Version: 1.0.9
 Author: TC 
 Author URI: http://www.9-sec.com/
 */
@@ -208,6 +208,7 @@ class ulitmatewpsf{
 				update_post_meta($newform_id, 'uwpqsf-option', $relarray);}
 				if(!empty($themeoption)){
 				update_post_meta($newform_id, 'uwpqsf-theme', $themeoption);}
+				do_action('saving_uwpqsf_form', $_POST);
 								
 				$returnlink = add_query_arg(array('uformid' => $newform_id, 'uformaction' => 'edit','status'=>'success'), UADDFORMURL);
 				wp_redirect( $returnlink ); exit;
@@ -269,6 +270,8 @@ class ulitmatewpsf{
 				update_post_meta($postid, 'uwpqsf-theme', $newthemeopt);
 				}
 				
+				do_action('saving_uwpqsf_form', $_POST);
+				
 				$returnlink = add_query_arg(array('uformid' => $postid, 'uformaction' => 'edit','status'=>'updated'), UADDFORMURL);
 				wp_redirect( $returnlink ); exit;
 
@@ -281,7 +284,21 @@ class ulitmatewpsf{
   }
 
   function U_wpqsf_shortcode($atts){
-	extract(shortcode_atts(array('id' => false, 'formtitle' =>1, 'button' => 1,'divclass' => '', 'infinite'=>'', 'text_position' => 'bottom' ), $atts));
+	extract(shortcode_atts(array('id' => false, 'formtitle' =>1, 'button' => 1,'divclass' => '', 'infinite'=>'', 'text_position' => 'bottom', 'lang'=>''), $atts));
+	//wpml
+	if(function_exists('icl_object_id') && $lang) {
+		$current_language = ICL_LANGUAGE_CODE;
+		$languages = explode(' ',$lang);
+		foreach($languages as $k => $v){
+			$getLang = explode('=',$v);
+			if(trim($getLang[0]) == trim($current_language)){
+				$id = $getLang[1];	
+				break;   
+			}
+		}	
+		
+	}
+	
 	if($id)
 	{
 		 ob_start();

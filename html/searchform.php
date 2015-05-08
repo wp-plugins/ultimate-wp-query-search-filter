@@ -13,13 +13,13 @@ if($options[0]['method'] == '1'){
 	$btype = 'button';
 	$method = '';
 	$bclass = 'usearchbtn';
-	$auto = '1';
+	$auto = true;
 }else{
  	$hidden = '<input type="hidden" name="s" value="uwpsfsearchtrg" />';
 	$btype = 'submit';
 	$method = 'method="get" action="'.home_url( '/' ).'"';
 	$bclass ='';
-	$auto = '';
+	$auto = false;
 }
 
 
@@ -94,19 +94,24 @@ $wrapper .= '<input type="'.$btype.'" id="'.$divid.'_btn" value="'.$options[0]['
 $btn = apply_filters('uwpsqf_form_btn', $wrapper, $id,$divclass,$defaultclass,$divid,$options[0]['button'] );
 $html .= $btn;
 }elseif($button == '0'){
- if($auto == '1'){
+ if($auto){
 	$form = '"#uwpqsffrom_'.$id.'"';
 	ob_start(); 
   ?>
 	<script type="text/javascript">jQuery(document).ready(function($) {
 	var formid = <?php echo $form; ?>;
-	$(formid).change(function(){ process_data($(this)); })
+	$(formid).find('input, textarea, button, select').change(function(){ 
+		process_data($(this)); 
+		
+		})
       ;})</script>
   <?php
     $html .= ob_get_clean();
  }
 }
-
+if(function_exists('icl_object_id') && $lang) {
+	$html .= '<input type="hidden" name="lang" value="'.$current_language.'"/>';
+}
 $html .= '<div style="clear:both"></div>';
 $html .= '</form>';//end form
 $html .= '</div>'; //end div

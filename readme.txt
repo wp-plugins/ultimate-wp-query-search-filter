@@ -4,7 +4,7 @@ Donate link: http://9-sec.com/donation/
 Tags: Search Filter, taxonoy, custom post type, custom meta field, taxonomy & meta field filter, advanced search, Ajax, search engine
 Requires at least: 3.5
 Tested up to: 4.2.1
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -110,3 +110,6 @@ For more Info or Documentation please visit [here](http://9-sec.com/2014/01/ulti
 * Fixed search form html issue
 * Add new parameter to shortcode to show text input box on top or bottom
 * Disabled input when submit on Ajax search
+
+= 1.0.9 =
+* Add WPML compatibility

@@ -30,6 +30,8 @@ echo '<input type="hidden" name="uformid" value="'.$formid.'" ><input type="hidd
 <div class="cbox">
 <b><?php _e('Form Title','UWPQSF'); ?> </b>: <input type="text" class="form_title" name="ftitle" value="<?php echo get_the_title($postid); ?> ">
 </div>
+<?php do_action('uwpqsf_adminform_top', $postid ) ;?>
+
 <?php require_once UWPQSFBASE . '/admin/fields/formmethod.php'; ?>
 <?php require_once UWPQSFBASE . '/admin/fields/post_type.php'; ?>
 <?php require_once UWPQSFBASE . '/admin/fields/taxonomy.php'; ?>
@@ -38,7 +40,7 @@ echo '<input type="hidden" name="uformid" value="'.$formid.'" ><input type="hidd
 <?php do_action( 'uwpqsf_after_cmf_adminform', $postid ); ?> 
 <?php require_once UWPQSFBASE . '/admin/fields/misc.php'; ?>
 <?php require_once UWPQSFBASE . '/admin/fields/themeoption.php'; ?>
-
+<?php do_action('uwpqsf_adminform_bottom', $postid ) ;?>
 <input type="submit" class="button-primary" name="uwpqsfsub" value="Save" >
 
 

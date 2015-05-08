@@ -32,7 +32,7 @@ if(!class_exists('uwpqsfront')){
 				$html .= '<input  type="hidden" name="taxo['.$c.'][opt]" value="'.$opt.'">';
 				if(!empty($taxall)){
 				$checkall = (isset($_GET['taxo'][$c]['call']) && $_GET['taxo'][$c]['call'] == '1'  ) ? 'checked="checked"' : '';	
-				$html .= '<label><input type="checkbox" id="tchkb-'.$c.'-0" class="tchkb-'.$c.'" name="taxo['.$c.'][call]" class="chktaxoall" value="1" '.$checkall.'>'.$taxall.'</label>';
+				$html .= '<label><input type="checkbox" id="tchkb-'.$c.'-0" class="tchkb-'.$c.' chktaxoall" name="taxo['.$c.'][call]"  value="1" '.$checkall.'>'.$taxall.'</label>';
 				}
 				$i = 1;
 				foreach ( $terms as $term ) {
@@ -105,7 +105,7 @@ if(!class_exists('uwpqsfront')){
 				 $html .= '<input type="hidden" name="cmf['.$i.'][compare]" value="'.$compare.'">';
 				if(!empty($all)){
 				 $checkall = (isset($_GET['cmf'][$i]['call']) && $_GET['cmf'][$i]['call'] == '1'  ) ? 'checked="checked"' : '';	
-				 $html .= '<label><input type="checkbox" id="cmf-'.$i.'-0" class="cmf-'.$i.'" name="cmf['.$i.'][call]" class="chkcmfall" value="1" '.$checkall.'>'.$all.'</label>';
+				 $html .= '<label><input type="checkbox" id="cmf-'.$i.'-0" class="cmf-'.$i.' chkcmfall" name="cmf['.$i.'][call]"  value="1" '.$checkall.'>'.$all.'</label>';
 				}
 				$c = 1;
 				foreach ( $opts as $opt ) {

@@ -32,13 +32,12 @@ jQuery(document).ready(function($) {
 		});
 		
 		window.process_data = function ($obj) {
-            console.log($obj);
 			var ajxdiv = $obj.closest("form").find("#uajaxdiv").val();	
 			var res = {loader:$('<div />',{'class':'umloading'}),container : $(''+ajxdiv+'')};
             
 			var getdata = $obj.closest("form").serialize();
 			var pagenum = '1';
-			console.log($obj);
+		
 			jQuery.ajax({
 				 type: 'POST',	 
 				 url: ajax.url,
@@ -73,8 +72,8 @@ jQuery(document).ready(function($) {
 				 });
 		}
 		
-	 $('body').on('click', '.chktaxoall,.chkcmfall',function () {
-	
+	 $('body').on('click', '.chktaxoall, .chkcmfall',function () {
+		
 	    $(this).closest('.togglecheck').find('input:checkbox').prop('checked', this.checked);
 		
          });
