@@ -1,13 +1,7 @@
 jQuery(document).ready(function($) {
 	
 		$('body').on('click','.usearchbtn', function(e) {
-            var form = $(this).parent().parent().attr('id');
-            if (!form) {
-                id = $(this);
-            }else{
-                var id = $('#'+form); 
-            }
-			process_data(id);
+			process_data($(this));
 			return false;
 		});
 	
@@ -34,7 +28,7 @@ jQuery(document).ready(function($) {
 		window.process_data = function ($obj) {
 			var ajxdiv = $obj.closest("form").find("#uajaxdiv").val();	
 			var res = {loader:$('<div />',{'class':'umloading'}),container : $(''+ajxdiv+'')};
-            
+            var formid = $obj.parent().parent().attr('id'); console.log(formid);
 			var getdata = $obj.closest("form").serialize();
 			var pagenum = '1';
 		
@@ -42,11 +36,11 @@ jQuery(document).ready(function($) {
 				 type: 'POST',	 
 				 url: ajax.url,
 				 data: ({action : 'uwpqsf_ajax',getdata:getdata, pagenum:pagenum }),
-				 beforeSend:function() {$(''+ajxdiv+'').empty();res.container.append(res.loader);$($obj).find('input, textarea, button, select').attr("disabled", true);},
+				 beforeSend:function() {$(''+ajxdiv+'').empty();res.container.append(res.loader);$obj.closest("form").find('input, textarea, button, select').attr("disabled", true);},
 				 success: function(html) {
 					res.container.find(res.loader).remove();
 				  $(''+ajxdiv+'').html(html);
-				  $($obj).find('input, textarea, button, select').attr("disabled", false);
+				  $obj.closest("form").find('input, textarea, button, select').attr("disabled", false);
 				
 				 }
 				 });
