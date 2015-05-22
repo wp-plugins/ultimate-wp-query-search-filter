@@ -10,87 +10,110 @@ $defaultclass = ($excss[3]) ? $excss[3] : 'uwpqsf_class';
 
 if($options[0]['method'] == '1'){
 	$hidden = '<input type="hidden" id="uajaxdiv" value="'.$options[0]['div'].'">';
-	$btype = 'button';	
+	$btype = 'button';
 	$method = '';
-	$bclass = 'usearchbtn';	
-	$auto = '1';	
+	$bclass = 'usearchbtn';
+	$auto = true;
 }else{
- 	$hidden = '<input type="hidden" name="s" value="uwpsfsearchtrg" />'; 
-	$btype = 'submit';	
-	$method = 'method="get" action="'.home_url( '/' ).'"';	
-	$bclass ='';		
-	$auto = '';
+ 	$hidden = '<input type="hidden" name="s" value="uwpsfsearchtrg" />';
+	$btype = 'submit';
+	$method = 'method="get" action="'.home_url( '/' ).'"';
+	$bclass ='';
+	$auto = false;
 }
 
- 
+
 
 
 $fields = new uwpqsfront();
 
-echo '<div id="'.$divid.'">';
-echo '<form id="uwpqsffrom_'.$id.'" '.$method.'>';
+$html = '<div id="'.$divid.'">';
+$html .= '<form id="uwpqsffrom_'.$id.'" '.$method.'>';
 if($formtitle){
-	echo '<div class="uform_title">'.get_the_title($id).'</div>';
+	$html .= '<div class="uform_title">'.get_the_title($id).'</div>';
 }
-echo '<input type="hidden" name="unonce" value="'.$nonce.'" /><input type="hidden" name="uformid" value="'.$id.'">';
+$html .= '<input type="hidden" name="unonce" value="'.$nonce.'" /><input type="hidden" name="uformid" value="'.$id.'">';
 
-echo $hidden;
+$html .= $hidden;
 
-do_action( 'uwpqsf_form_top', $atts);
+ob_start(); 
+$html .= do_action( 'uwpqsf_form_top', $atts);
+$html .= ob_get_clean();
 
-if(!empty($taxo)){
-	$c = 0;
-	foreach($taxo as $k => $v){
-		$eid = explode(",", $v['exc']);
-		$args = array('hide_empty'=>$v['hide'],'exclude'=>$eid );	
-        $terms = get_terms($v['taxname'],$args);
- 	    $count = count($terms);
-		echo $fields->output_formtaxo_fields($v['type'],$v['exc'],$v['hide'],$v['taxname'],$v['taxlabel'],$v['taxall'],$v['operator'],$c,$defaultclass,$id,$divclass );
-	     
-	$c++;			
-  }
-}
-
-if(!empty($cmf)){  
-   $i=0;
-    foreach($cmf as $k => $v){
-		if(isset($v['type'])){
-			echo $fields->output_formcmf_fields($v['type'],$v['metakey'],$v['compare'],$v['opt'],$v['label'],$v['all'],$i,$defaultclass,$id,$divclass );
-		 $i++;
-	   }	
-	}
-}
-
-if(isset($options[0]['strchk']) && ($options[0]['strchk'] == '1') ){
+if(isset($options[0]['strchk']) && ($options[0]['strchk'] == '1') && $text_position =="top"){
 		$stext  = '<div class="'.$defaultclass.' '.$divclass.'"><label class="'.$defaultclass.' '.$divclass.'-keyword">'.$options[0]['strlabel'].'</label>';
 		$oldvalue = (isset($_GET['skeyword'])) ? $_GET['skeyword'] : '';
 		$stext .= '<input id="'.$divid.'_key" type="text" name="skeyword" class="uwpqsftext" value="'.$oldvalue.'" />';
         $stext .= '</div>';
         $textsearch =  apply_filters('uwpqsf_string_search',$stext, $id,$divid,$defaultclass,$divclass,$options);
-        echo $textsearch;
+        $html .= $textsearch;
 }
+
+if(!empty($taxo)){
+	$c = 0;
+	foreach($taxo as $k => $v){
+		$eid = explode(",", $v['exc']);
+		$args = array('hide_empty'=>$v['hide'],'exclude'=>$eid );
+        $terms = get_terms($v['taxname'],$args);
+ 	    $count = count($terms);
+		$html .= $fields->output_formtaxo_fields($v['type'],$v['exc'],$v['hide'],$v['taxname'],$v['taxlabel'],$v['taxall'],$v['operator'],$c,$defaultclass,$id,$divclass );
+
+	$c++;
+  }
+}
+
+ob_start(); 
+do_action( 'uwpqsf_form_mid', $atts);
+$html .= ob_get_clean();
+
+if(!empty($cmf)){
+   $i=0;
+    foreach($cmf as $k => $v){
+		if(isset($v['type'])){
+			$html .= $fields->output_formcmf_fields($v['type'],$v['metakey'],$v['compare'],$v['opt'],$v['label'],$v['all'],$i,$defaultclass,$id,$divclass );
+		 $i++;
+	   }
+	}
+}
+
+if(isset($options[0]['strchk']) && ($options[0]['strchk'] == '1') && $text_position =="bottom"){
+		$stext  = '<div class="'.$defaultclass.' '.$divclass.'"><label class="'.$defaultclass.' '.$divclass.'-keyword">'.$options[0]['strlabel'].'</label>';
+		$oldvalue = (isset($_GET['skeyword'])) ? $_GET['skeyword'] : '';
+		$stext .= '<input id="'.$divid.'_key" type="text" name="skeyword" class="uwpqsftext" value="'.$oldvalue.'" />';
+        $stext .= '</div>';
+        $textsearch =  apply_filters('uwpqsf_string_search',$stext, $id,$divid,$defaultclass,$divclass,$options);
+        $html .= $textsearch;
+}
+ob_start(); 
 do_action( 'uwpqsf_form_bottom' , $atts);
+$html .= ob_get_clean();
 
 if($button && $button == '1'){
-$html = '<div class="'.$defaultclass.' '.$divclass.' uwpqsf_submit">';
-$html .= '<input type="'.$btype.'" id="'.$divid.'_btn" value="'.$options[0]['button'].'" alt="[Submit]" class="usfbtn '.$bclass.'" /></div>';
-$btn = apply_filters('uwpsqf_form_btn', $html, $id,$divclass,$defaultclass,$divid,$options[0]['button'] );
-echo $btn;
+$wrapper = '<div class="'.$defaultclass.' '.$divclass.' uwpqsf_submit" id="uwpqsf_btn">';
+$wrapper .= '<input type="'.$btype.'" id="'.$divid.'_btn" value="'.$options[0]['button'].'" alt="[Submit]" class="usfbtn '.$bclass.'" /></div>';
+$btn = apply_filters('uwpsqf_form_btn', $wrapper, $id,$divclass,$defaultclass,$divid,$options[0]['button'] );
+$html .= $btn;
 }elseif($button == '0'){
- if($auto == '1'){
+ if($auto){
 	$form = '"#uwpqsffrom_'.$id.'"';
+	ob_start(); 
   ?>
-	<script type="text/javascript">jQuery(document).ready(function($) { 
-	var formid = <?php echo $form; ?>; 
-	$(formid).change(function(){ process_data($(this)); })
+	<script type="text/javascript">jQuery(document).ready(function($) {
+	var formid = <?php echo $form; ?>;
+	$(formid).find('input, textarea, button, select').change(function(){ 
+		process_data($(this)); 
+		
+		})
       ;})</script>
   <?php
+    $html .= ob_get_clean();
  }
 }
-
-
-echo '</form>';//end form
-echo '</div>'; //end div
+if(function_exists('icl_object_id') && $lang) {
+	$html .= '<input type="hidden" name="lang" value="'.$current_language.'"/>';
+}
+$html .= '<div style="clear:both"></div>';
+$html .= '</form>';//end form
+$html .= '</div>'; //end div
+echo $html;
 ;?>
-
-
