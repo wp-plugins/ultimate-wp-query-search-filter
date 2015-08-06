@@ -1,7 +1,7 @@
 === Ultimate WP Query Search Filter ===
 Contributors: TC.K
 Donate link: http://9-sec.com/donation/
-Tags: Search Filter, taxonoy, custom post type, custom meta field, taxonomy & meta field filter, advanced search, Ajax, search engine
+Tags: Search Filter, taxonomy, custom post type, custom meta field, taxonomy & meta field filter, advanced search, Ajax, search engine
 Requires at least: 3.5
 Tested up to: 4.2.2
 Stable tag: 1.0.10
