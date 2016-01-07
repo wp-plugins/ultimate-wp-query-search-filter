@@ -1,10 +1,10 @@
 === Ultimate WP Query Search Filter ===
-Contributors: TC.K
+Contributors: TC.K,michaelgumtow
 Donate link: http://9-sec.com/donation/
 Tags: Search Filter, taxonoy, custom post type, custom meta field, taxonomy & meta field filter, advanced search, Ajax, search engine
 Requires at least: 3.5
-Tested up to: 4.2.2
-Stable tag: 1.0.10
+Tested up to: 4.4.1
+Stable tag: 1.0.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,7 +43,7 @@ You can simply refer the themes/default.css within the plugin folder and alter i
 = What if I want to display the search form in my template? =
 
 Put this into your template:
-<?php echo do_shortcode("[ULWPQSF id={form id}"); ?>
+`<?php echo do_shortcode("[ULWPQSF id={form id}"); ?>`
 
 = What if I want to display the search form in a sidebar widget? =
 
@@ -116,3 +116,6 @@ For more Info or Documentation please visit [here](http://9-sec.com/2014/01/ulti
 
 = 1.0.10 =
 * Fix frontend js error for multiple form with same ID
+
+= 1.0.11 =
+* Added function not exists checks on form outputs
