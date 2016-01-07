@@ -1,4 +1,5 @@
 <?php
+if(!function_exists("uwpqsf_ajax_pagination")):
 function uwpqsf_ajax_pagination($pagenumber, $pages = '', $range = 4, $id,$getdata){
 	$showitems = ($range * 2)+1;  
 	 
@@ -46,8 +47,9 @@ function uwpqsf_ajax_pagination($pagenumber, $pages = '', $range = 4, $id,$getda
 		 
 		 
 }// pagination
+endif;
 
-
+if(!function_exists("get_uwpqsf_form")):
 function get_uwpqsf_form($args=array()){
 	$default = array('id' => false, 'formtitle' =>1, 'button' => 1,'divclass' => '', 'infinite'=>'');
 	$atts=array_merge($default,$args);
@@ -64,4 +66,5 @@ function get_uwpqsf_form($args=array()){
 		}
 
 }
+endif;
 ?>
