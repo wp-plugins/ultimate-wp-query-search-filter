@@ -40,13 +40,20 @@ ob_start();
 $html .= do_action( 'uwpqsf_form_top', $atts);
 $html .= ob_get_clean();
 
-if(isset($options[0]['strchk']) && ($options[0]['strchk'] == '1') && $text_position =="top"){
-		$stext  = '<div class="'.$defaultclass.' '.$divclass.'"><label class="'.$defaultclass.' '.$divclass.'-keyword">'.$options[0]['strlabel'].'</label>';
-		$oldvalue = (isset($_GET['skeyword'])) ? $_GET['skeyword'] : '';
-		$stext .= '<input id="'.$divid.'_key" type="text" name="skeyword" class="uwpqsftext" value="'.$oldvalue.'" />';
-        $stext .= '</div>';
-        $textsearch =  apply_filters('uwpqsf_string_search',$stext, $id,$divid,$defaultclass,$divclass,$options);
-        $html .= $textsearch;
+if(isset($options[0]['strchk']) && ($options[0]['strchk'] == '1') && ($text_position =="top" || $text_position =="top_and_button")){
+    $stext  = '<div class="'.$defaultclass.' '.$divclass.'"><label class="'.$defaultclass.' '.$divclass.'-keyword">'.$options[0]['strlabel'].'</label>';
+    $oldvalue = (isset($_GET['skeyword'])) ? $_GET['skeyword'] : '';
+    $stext .= '<input id="'.$divid.'_key" type="text" name="skeyword" class="uwpqsftext" value="'.$oldvalue.'" />';
+    $stext .= '</div>';
+    $textsearch =  apply_filters('uwpqsf_string_search',$stext, $id,$divid,$defaultclass,$divclass,$options);
+    $html .= $textsearch;
+
+    if ($text_position =="top_and_button"){
+        $wrapper = '<div class="'.$defaultclass.' '.$divclass.' uwpqsf_submit" id="uwpqsf_btn">';
+        $wrapper .= '<input type="'.$btype.'" id="'.$divid.'_btn" value="'.$options[0]['button'].'" alt="[Submit]" class="usfbtn '.$bclass.'" /></div>';
+        $btn = apply_filters('uwpsqf_form_btn', $wrapper, $id,$divclass,$defaultclass,$divid,$options[0]['button'] );
+        $html .= $btn;
+    }
 }
 
 if(!empty($taxo)){
